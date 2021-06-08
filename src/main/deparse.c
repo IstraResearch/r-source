@@ -329,10 +329,12 @@ SEXP deparse1line_(SEXP call, Rboolean abbrev, int opts)
 	vmax = vmaxget();
 	buf = R_alloc((size_t) len+lines, sizeof(char));
 	*buf = '\0';
+	char* endbuf = buf;
 	for (i = 0; i < length(temp); i++) {
-	    strcat(buf, CHAR(STRING_ELT(temp, i)));
-	    if (i < lines - 1)
-		strcat(buf, "\n");
+        if (i % 10000 == 9999) R_CheckUserInterrupt();
+        endbuf = stpcpy(endbuf, CHAR(STRING_ELT(temp, i)));
+        if (i < lines - 1)
+            endbuf = stpcpy(endbuf, "\n");
 	}
 	temp = ScalarString(mkCharCE(buf, enc));
 	vmaxset(vmax);
