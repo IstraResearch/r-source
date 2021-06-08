@@ -675,6 +675,7 @@ static void init_signal_handlers(void)
     signal(SIGINT,  handleInterrupt);
     signal(SIGUSR1, onsigusr1);
     signal(SIGUSR2, onsigusr2);
+    signal(SIGHUP, onsighup);
     signal(SIGPIPE, handlePipe);
 }
 
@@ -684,6 +685,7 @@ static void init_signal_handlers(void)
     signal(SIGINT,  handleInterrupt);
     signal(SIGUSR1, onsigusr1);
     signal(SIGUSR2, onsigusr2);
+    signal(SIGHUP, onsighup);
 #ifndef Win32
     signal(SIGPIPE, handlePipe);
 #else

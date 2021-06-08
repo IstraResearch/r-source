@@ -994,6 +994,7 @@ extern0 int R_PCRE_limit_recursion;
 # define onintrNoResume		Rf_onintrNoResume
 # define onsigusr1              Rf_onsigusr1
 # define onsigusr2              Rf_onsigusr2
+# define onsighup                Rf_onsighup
 # define parse			Rf_parse
 # define patchArgsByActuals	Rf_patchArgsByActuals
 # define PrintInit              Rf_PrintInit
@@ -1232,6 +1233,7 @@ void onintr(void);
 void onintrNoResume(void);
 RETSIGTYPE onsigusr1(int);
 RETSIGTYPE onsigusr2(int);
+RETSIGTYPE onsighup(int);
 R_xlen_t OneIndex(SEXP, SEXP, R_xlen_t, int, SEXP*, int, SEXP);
 SEXP parse(FILE*, int);
 SEXP patchArgsByActuals(SEXP, SEXP, SEXP);

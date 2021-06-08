@@ -252,6 +252,25 @@ RETSIGTYPE attribute_hidden onsigusr2(int dummy)
     R_CleanUp(SA_SAVE, 0, 0);
 }
 
+RETSIGTYPE attribute_hidden onsighup(int dummy)
+{
+    REprintf(_("SIGHUP signal handler called"));
+
+    inError = 1;
+
+    if(R_CollectWarnings) PrintWarnings();
+
+    R_ResetConsole();
+    R_FlushConsole();
+    R_ClearerrConsole();
+    R_ParseError = 0;
+    R_ParseErrorFile = NULL;
+    R_ParseErrorMsg[0] = '\0';
+
+    R_run_onexits(NULL);
+
+    R_CleanUp(SA_NOSAVE, 2, 1);
+}
 
 static void setupwarnings(void)
 {
