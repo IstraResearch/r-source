@@ -530,6 +530,7 @@ found:
     /* FIXME: why not use memcpy here? */
     for(i = loc + 1 ; i < CountDLL ; i++) {
         LoadedDLL[i - 1] = LoadedDLL[i];
+    }
     CountDLL--;
     return 1;
 }
