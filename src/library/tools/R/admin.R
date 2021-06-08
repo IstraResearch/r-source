@@ -351,7 +351,7 @@ function(dir, outDir)
     ## would detect the error.
     op <- options(showErrorCalls=FALSE)
     on.exit(options(op))
-    parse(outFile)
+    #parse(outFile)
     invisible()
 }
 
