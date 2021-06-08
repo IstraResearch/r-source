@@ -619,7 +619,8 @@ static void sigactionSegv(int signum, siginfo_t *ip, void *context)
 		 "normal R exit",
 		 "exit R without saving workspace",
 		 "exit R saving workspace");
-	while(1) {
+	int attempts = 5;
+	while(attempts > 0) {
 	    if(R_ReadConsole("Selection: ", ConsoleBuf, CONSOLE_BUFFER_SIZE,
 			     0) > 0) {
 		if(ConsoleBuf[0] == '1') break;
@@ -627,6 +628,7 @@ static void sigactionSegv(int signum, siginfo_t *ip, void *context)
 		if(ConsoleBuf[0] == '3') R_CleanUp(SA_NOSAVE, 70, 0);
 		if(ConsoleBuf[0] == '4') R_CleanUp(SA_SAVE, 71, 0);
 	    }
+	    --attempts;
 	}
 	REprintf("R is aborting now ...\n");
     }
