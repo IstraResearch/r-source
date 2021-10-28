@@ -172,18 +172,25 @@ makeLazyLoadDB <- function(from, filebase, compress = TRUE, ascii = FALSE,
         .Internal(getVarsFromFrame(ls(e, all.names = TRUE), e, FALSE))
 
     envtable <- function() {
-      enames <- character(0L)
-      envname <- function(e) paste0("env::", digest(e))
-      getname <- function(e) {
-        name <- envname(e)
-        if (name %in% enames) name
-      }
-      insert <- function(e) {
-        name <- envname(e)
-        enames <<- c(name, enames)
-        name
-      }
-      list(insert = insert, getname = getname)
+        idx <- 0
+        envs <- NULL
+        enames <- character(0L)
+        find <- function(v, keys, vals) {
+            for (i in seq_along(keys))
+                if (identical(v, keys[[i]]))
+                    return(vals[i])
+	    NULL
+	}
+        getname <- function(e) find(e, envs, enames)
+        getenv <- function(n) find(n, enames, envs)
+        insert <- function(e) {
+            idx <<- idx + 1
+            name <- paste0("env::", idx)
+            envs <<- c(e, envs)
+            enames <<- c(name, enames)
+            name
+        }
+        list(insert = insert, getenv = getenv, getname = getname)
     }
 
     lazyLoadDBinsertValue <- function(value, file, ascii, compress, hook)
