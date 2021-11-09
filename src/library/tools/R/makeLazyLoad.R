@@ -160,6 +160,7 @@ data2LazyLoadDB <- function(package, lib.loc = NULL, compress = TRUE)
     }
 }
 
+
 makeLazyLoadDB <- function(from, filebase, compress = TRUE, ascii = FALSE,
                            variables, set.install.dir = NULL)
 {
@@ -172,25 +173,19 @@ makeLazyLoadDB <- function(from, filebase, compress = TRUE, ascii = FALSE,
         .Internal(getVarsFromFrame(ls(e, all.names = TRUE), e, FALSE))
 
     envtable <- function() {
-        idx <- 0
-        envs <- NULL
         enames <- character(0L)
-        find <- function(v, keys, vals) {
-            for (i in seq_along(keys))
-                if (identical(v, keys[[i]]))
-                    return(vals[i])
-	    NULL
-	}
-        getname <- function(e) find(e, envs, enames)
-        getenv <- function(n) find(n, enames, envs)
+        # The printed env address serves as a unique name
+        envname <- function(e) format(e)
+        getname <- function(e) {
+          name <- envname(e)
+          if (name %in% enames) name
+        }
         insert <- function(e) {
-            idx <<- idx + 1
-            name <- paste0("env::", idx)
-            envs <<- c(e, envs)
+            name <- envname(e)
             enames <<- c(name, enames)
             name
         }
-        list(insert = insert, getenv = getenv, getname = getname)
+        list(insert = insert, getname = getname)
     }
 
     lazyLoadDBinsertValue <- function(value, file, ascii, compress, hook)
