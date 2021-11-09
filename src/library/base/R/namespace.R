@@ -1602,6 +1602,7 @@ registerS3methods <- function(info, package, env)
 	    table <- new.env(hash = TRUE, parent = baseenv())
 	    defenv[[".__S3MethodsTable__."]] <- table
 	}
+        tryCatch(table[[nm]], error=function(e) table[[nm]]<-NULL)
         if(!is.null(e <- table[[nm]]) &&
            !identical(e, get(method, envir = envir))) {
             current <- environmentName(environment(e))
